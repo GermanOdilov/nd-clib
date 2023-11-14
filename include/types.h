@@ -56,4 +56,11 @@ typedef u64 usize;
 typedef enum NdResult: u8 {
     ND_SUCCESS,
     ND_FAILURE,
+    ND_MEM_ZERO_ALLOC,
+    ND_ARR_INDEX_OUT_OF_LEN,
+    ND_ARR_EMPTY,
 } NdResult;
+
+#define ND_EXEC
+#define ND_EXEC_TERM
+#define ND_EXEC_DEBUG
