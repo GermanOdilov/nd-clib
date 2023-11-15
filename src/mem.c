@@ -67,8 +67,7 @@ nd_mem_cpy_blocks(const void* src, void* dst, usize len, usize size, NdMemCpyDir
 NdResult
 nd_mem_cpy_blocks_fwd(const void* src, void* dst, usize len, usize size) {
     for (usize i = 0; i < len; ++i) {
-        // TODO: ND_EXEC
-        nd_mem_cpy(src + i * size, dst + i * size, size);
+        ND_RES_EXEC(nd_mem_cpy(src + i * size, dst + i * size, size));
     }
 
     return ND_SUCCESS;
@@ -77,8 +76,7 @@ nd_mem_cpy_blocks_fwd(const void* src, void* dst, usize len, usize size) {
 NdResult
 nd_mem_cpy_blocks_rev(const void* src, void* dst, usize len, usize size) {
     for (usize i = len - 1; i >= 0; --i) {
-        // TODO: ND_EXEC
-        nd_mem_cpy(src + i * size, dst + i * size, size);
+        ND_RES_EXEC(nd_mem_cpy(src + i * size, dst + i * size, size));
     }
 
     return ND_SUCCESS;
@@ -125,8 +123,7 @@ nd_mem_range_arr_set(NdMemRangeArr* arr, usize index, NdMemRange item) {
 NdResult
 nd_mem_range_arr_add(NdMemRangeArr* arr, usize index, NdMemRange item) {
     if (arr->len == arr->cap) {
-        // TODO: ND_EXEC
-        nd_mem_ralloc((void**)&arr->ptr, 2 * ND_SIZEOF(NdMemRange) * arr->cap);
+        ND_RES_EXEC(nd_mem_ralloc((void**)&arr->ptr, 2 * ND_SIZEOF(NdMemRange) * arr->cap));
 
         arr->cap = 2 * ND_SIZEOF(NdMemRange) * arr->cap;
     }
@@ -158,8 +155,7 @@ nd_mem_range_arr_remove(NdMemRangeArr* arr, usize index) {
         usize cap_    = ND_SIZEOF(NdMemRange) * arr->cap / 2;
         usize cap_res = cap_ > 0 ? cap_ : 1;
 
-        // TODO: ND_EXEC
-        nd_mem_ralloc((void**)&arr->ptr, cap_res);
+        ND_RES_EXEC(nd_mem_ralloc((void**)&arr->ptr, cap_res));
 
         arr->cap = cap_res;
     }

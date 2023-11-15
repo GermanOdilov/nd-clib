@@ -1,5 +1,6 @@
 #pragma once
 
+#include "res.h"
 #include "types.h"
 
 #include <math.h>

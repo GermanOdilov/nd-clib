@@ -10,14 +10,16 @@
 #define ND_STR(X)  #X
 #define ND_STRD(X) ND_STR(X)
 
-#define ND_PREPROC_ERR(MSG) ND_FILE ":" ND_STRD(ND_LINE) ": " MSG
+#define ND_FILE_MSG(MSG)                  ND_FILE ":" ND_STRD(ND_LINE) ": " MSG
+#define ND_FN_MSG_EMPTY(NAME, ARGS, TYPE) ND_FILE "::" ND_STR(NAME) ":" ND_STRD(ND_LINE) ": " ND_STR(ARGS) " -> " ND_STR(TYPE)
+#define ND_FN_MSG(NAME, ARGS, TYPE, MSG)  ND_FN_MSG_EMPTY(NAME, ARGS, TYPE) ": " MSG
 
 #if INTPTR_MAX == INT32_MAX
     #define ND_ARCH_BIT_X32
 #elif INTPTR_MAX == INT64_MAX
     #define ND_ARCH_BIT_X64
 #else
-    #error ND_PREPROC_ERR("Unknown architecture bitness. Supported: x32, x64")
+    #error ND_FILE_MSG("Unknown architecture bitness. Supported: x32, x64")
 #endif
 
 #if defined(__GNUC__)
@@ -27,7 +29,7 @@
 #elif defined(_MSC_VER)
     #define ND_MSVC
 #else
-    #error ND_PREPROC_ERR("Unknown compiler. Supported: GCC, Clang, MSVC")
+    #error ND_FILE_MSG("Unknown compiler. Supported: GCC, Clang, MSVC")
 #endif
 
 #if defined(__unix__)
@@ -51,7 +53,11 @@
 #endif
 
 #if !defined(ND_OS_UNIX) && !defined(ND_OS_LINUX) && !defined(ND_OS_MAC) && !defined(ND_OS_ANDROID) && !defined(ND_OS_WINDOWS)
-    #error ND_PREPROC_ERR("Unknown OS. Supported: Unix, Linux, Mac, Android, Windows")
+    #error ND_FILE_MSG("Unknown OS. Supported: Unix, Linux, Mac, Android, Windows")
+#endif
+
+#if !defined(ND_IS_DEBUG) && !defined(ND_IS_RELEASE)
+    #error ND_FILE_MSG("Unknown mode. Supported: ND_IS_DEBUG, ND_IS_RELEASE")
 #endif
 
 #define ND_INLINE        inline

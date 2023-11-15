@@ -3,6 +3,7 @@
 #include "env.h"
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <uchar.h>
 
 #define ND_FALSE 0
@@ -44,7 +45,7 @@ typedef u32 usize;
 typedef i64 isize;
 typedef u64 usize;
 #else
-    #error ND_PREPROC_ERR("Unable to typedef i64/u64: unknown architecture bitness. Supported: ND_ARCH_BIT_X32, ND_ARCH_BIT_X64")
+    #error ND_FILE_MSG("Unable to typedef i64/u64: unknown architecture bitness. Supported: ND_ARCH_BIT_X32, ND_ARCH_BIT_X64")
 #endif
 
 #define ND_SIZEOF(x)   (usize)sizeof(x)
@@ -61,7 +62,3 @@ typedef enum NdResult: u8 {
     ND_ARR_INDEX_OUT_OF_LEN,
     ND_ARR_EMPTY,
 } NdResult;
-
-#define ND_EXEC(X)
-#define ND_EXEC_TERM(X)
-#define ND_EXEC_DEBUG(X)
