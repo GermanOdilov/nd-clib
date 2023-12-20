@@ -3,6 +3,7 @@ NAME = nd
 VER_MAJOR = 0
 VER_MINOR = 1
 VER_PATCH = 0
+VER = $(VER_MAJOR).$(VER_MINOR).$(VER_PATCH)
 
 AR = ar
 CC = gcc
@@ -30,10 +31,11 @@ OBJS_SHARED_DEBUG = $(SRCS:$(SRC)/%.c=$(OBJ_SHARED_DEBUG)/%.o)
 OBJ_COMPILEDB = $(BIN_COMPILEDB)/obj
 OBJS_COMPILEDB = $(SRCS:$(SRC)/%.c=$(OBJ_COMPILEDB)/%.o)
 
-LIB_STATIC = $(BIN)/lib$(NAME).a
-LIB_SHARED = $(BIN)/lib$(NAME).so
-LIB_STATIC_DEBUG = $(BIN_DEBUG)/lib$(NAME).a
-LIB_SHARED_DEBUG = $(BIN_DEBUG)/lib$(NAME).so
+LIB_NAME = lib$(NAME)
+LIB_STATIC = $(BIN)/$(LIB_NAME)
+LIB_SHARED = $(BIN)/$(LIB_NAME)
+LIB_STATIC_DEBUG = $(BIN_DEBUG)/$(LIB_NAME)
+LIB_SHARED_DEBUG = $(BIN_DEBUG)/$(LIB_NAME)
 
 INCS = -Iinclude
 LIBS = -pthread
@@ -49,16 +51,20 @@ release: release-static release-shared
 debug: debug-static debug-shared
 
 release-static: $(OBJS_STATIC)
-	$(AR) rcs $(LIB_STATIC) $(OBJS_STATIC)
+	$(AR) rcs $(LIB_STATIC).$(VER).a $(OBJS_STATIC)
+	ln -s $(LIB_NAME).$(VER).a $(LIB_STATIC).a
 
 release-shared: $(OBJS_SHARED)
-	$(CC) -shared -o $(LIB_SHARED) $(OBJS_SHARED)
+	$(CC) -shared -o $(LIB_SHARED).$(VER).so $(OBJS_SHARED)
+	ln -s $(LIB_NAME).$(VER).so $(LIB_SHARED).so
 
 debug-static: $(OBJS_STATIC_DEBUG)
-	$(AR) rcs $(LIB_STATIC_DEBUG) $(OBJS_STATIC_DEBUG)
+	$(AR) rcs $(LIB_STATIC_DEBUG).$(VER).a $(OBJS_STATIC_DEBUG)
+	ln -s $(LIB_NAME).$(VER).a $(LIB_STATIC_DEBUG).a
 
 debug-shared: $(OBJS_SHARED_DEBUG)
-	$(CC) -shared -o $(LIB_SHARED_DEBUG) $(OBJS_SHARED_DEBUG)
+	$(CC) -shared -o $(LIB_SHARED_DEBUG).$(VER).so $(OBJS_SHARED_DEBUG)
+	ln -s $(LIB_NAME).$(VER).so $(LIB_SHARED_DEBUG).so
 
 compiledb: $(OBJS_COMPILEDB)
 	rm -rf $(BIN_COMPILEDB)

@@ -53,12 +53,3 @@ typedef u64 usize;
 #define ND_LENGTHOF(s) (countof(s) - 1)
 #define ND_ALIGNOF(x)  (usize) _Alignof(x)
 #define ND_ALIGNAS(x)  _Alignas(x)
-
-typedef enum NdResult: u8 {
-    ND_SUCCESS,
-    ND_FAILURE,
-    ND_UNKNOWN_OP,
-    ND_MEM_ZERO_ALLOC,
-    ND_ARR_INDEX_OUT_OF_LEN,
-    ND_ARR_EMPTY,
-} NdResult;

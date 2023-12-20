@@ -1,12 +1,7 @@
 #pragma once
 
-#include "env.h"
-#include "mem.h"
+#include "arr.h"
 #include "types.h"
-
-#include <stdio.h>
-#include <time.h>
-#include <vulkan/vulkan.h>
 
 typedef enum NdLogLevel: u8 {
     ND_LOG_SCOPE,
@@ -18,27 +13,40 @@ typedef enum NdLogLevel: u8 {
 } NdLogLevel;
 
 typedef struct NdLogConfig {
-    FILE* file;
-    usize size;
-
-    NdLogLevel level;
 } NdLogConfig;
 
 ND_ARR(NdLogConfig);
 
-NdResult
-nd_log_init(enum NdLogLevel level, NdLogConfigArr configArr);
+void
+nd_log_init(NdLogConfigArr configs);
 
-NdResult
-nd_log(enum NdLogLevel level, str message, ...);
+void
+nd_log(NdLogLevel level, str message, ...);
 
-// TODO: Make ND_LOG with optional variadic
+inline void
+nd_scope(str message, ...) {}
 
-#define ND_SCOPE(MSG, ...) nd_log(ND_LOG_SCOPE, MSG, __VA_ARGS__)
-#define ND_TRACE(MSG, ...) nd_log(ND_LOG_TRACE, MSG, __VA_ARGS__)
-#define ND_DEBUG(MSG, ...) nd_log(ND_LOG_DEBUG, MSG, __VA_ARGS__)
-#define ND_INFO(MSG, ...)  nd_log(ND_LOG_INFO, MSG, __VA_ARGS__)
-#define ND_WARN(MSG, ...)  nd_log(ND_LOG_WARN, MSG, __VA_ARGS__)
-#define ND_ERROR(MSG, ...) nd_log(ND_LOG_ERROR, MSG, __VA_ARGS__)
+inline void
+nd_trace(str message, ...) {}
+
+inline void
+nd_debug(str message, ...) {}
+
+inline void
+nd_info(str message, ...) {}
+
+inline void
+nd_warn(str message, ...) {}
+
+inline void
+nd_error(str message, ...) {}
+
+#define ND_LOG(LEVEL, MSG, ...)
+#define ND_SCOPE(MSG, ...) ND_LOG(ND_LOG_SCOPE, MSG, __VA_ARGS__)
+#define ND_TRACE(MSG, ...) ND_LOG(ND_LOG_TRACE, MSG, __VA_ARGS__)
+#define ND_DEBUG(MSG, ...) ND_LOG(ND_LOG_DEBUG, MSG, __VA_ARGS__)
+#define ND_INFO(MSG, ...)  ND_LOG(ND_LOG_INFO, MSG, __VA_ARGS__)
+#define ND_WARN(MSG, ...)  ND_LOG(ND_LOG_WARN, MSG, __VA_ARGS__)
+#define ND_ERROR(MSG, ...) ND_LOG(ND_LOG_ERROR, MSG, __VA_ARGS__)
 
 // #define ND_STACKTRACE

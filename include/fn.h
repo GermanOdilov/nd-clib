@@ -2,6 +2,8 @@
 
 #include "env.h"
 #include "log.h"
+#include "opt.h"
+#include "res.h"
 
 #define ND_FN_NAME(NAME)      NAME
 #define ND_FN_NAME_IMPL(NAME) NAME##__impl
@@ -39,3 +41,13 @@
                                                           \
         ND_SCOPE("< " ND_FN_MSG_EMPTY(NAME, ARGS, TYPE)); \
     }
+
+#define ND_FN_RES(NAME, ARGS_CALL, ARGS, TYPE_OK, TYPE_ERR, BODY) \
+    ND_RES(TYPE_OK, TYPE_ERR);                                    \
+                                                                  \
+    ND_FN(NAME, ARGS_CALL, ARGS, ND_RES_NAME(TYPE_OK), BODY);
+
+#define ND_FN_OPT(NAME, ARGS_CALL, ARGS, TYPE, BODY) \
+    ND_OPT(TYPE);                                    \
+                                                     \
+    ND_FN(NAME, ARGS_CALL, ARGS, ND_OPT_NAME(TYPE), BODY);

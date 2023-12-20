@@ -1,27 +1,16 @@
 #pragma once
 
-#include "env.h"
-#include "log.h"
-#include "types.h"
+typedef enum NdResult {
+    ND_OK,
+    ND_ERR,
+} NdOption;
 
-#define ND_RES_EXEC(X)                                               \
-    {                                                                \
-        NdResult res = X;                                            \
-                                                                     \
-        if (res != ND_SUCCESS) {                                     \
-            ND_WARN(ND_FILE_MSG("NdResult != ND_SUCCESS: %d"), res); \
-                                                                     \
-            return res;                                              \
-        }                                                            \
-    }
-
-#define ND_RES_EXEC_TERM(X)                                           \
-    {                                                                 \
-        NdResult res = X;                                             \
-                                                                      \
-        if (res != ND_SUCCESS) {                                      \
-            ND_ERROR(ND_FILE_MSG("NdResult != ND_SUCCESS: $d"), res); \
-                                                                      \
-            exit(EXIT_FAILURE);                                       \
-        }                                                             \
-    }
+#define ND_RES_NAME(TYPE) TYPE##Res
+#define ND_RES(TYPE_OK, TYPE_ERR)         \
+    typedef struct ND_RES_NAME(TYPE_OK) { \
+        union {                           \
+            TYPE_OK  ok;                  \
+            TYPE_ERR err;                 \
+        } val;                            \
+        NdResult res;                     \
+    } ND_RES_NAME(TYPE_OK)
