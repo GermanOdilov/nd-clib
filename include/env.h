@@ -4,7 +4,7 @@
 
 #define ND_FILE __FILE__
 #define ND_LINE __LINE__
-#define ND_FUNC __func__
+#define ND_FN   __func__
 
 #define ND_SELF(X) X
 #define ND_STR(X)  #X
